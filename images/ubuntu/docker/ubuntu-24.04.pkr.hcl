@@ -199,6 +199,7 @@ build {
       "apt-get update",
       "apt-get install apt-utils",
       "apt-get install sudo lsb-release wget",
+      "apt-get install netcat-openbsd",  # provisioning install-apt-vital.sh requires netcat (todo: move to upstream)
       "apt-get clean all",
     ]
   }
