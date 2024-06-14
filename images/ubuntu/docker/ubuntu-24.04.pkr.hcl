@@ -375,51 +375,51 @@ build {
     scripts          = ["${path.root}/../scripts/build/install-homebrew.sh"]
   }
 
-  provisioner "shell" {
-    environment_vars = ["HELPER_SCRIPTS=${var.helper_script_folder}"]
-    execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    scripts          = ["${path.root}/../scripts/build/configure-snap.sh"]
-  }
-
-  provisioner "shell" {
-    execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    expect_disconnect = true
-    inline            = ["echo 'Reboot VM'", "sudo reboot"]
-  }
+#  provisioner "shell" {
+#    environment_vars = ["HELPER_SCRIPTS=${var.helper_script_folder}"]
+#    execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+#    scripts          = ["${path.root}/../scripts/build/configure-snap.sh"]
+#  }
+#
+#  provisioner "shell" {
+#    execute_command   = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+#    expect_disconnect = true
+#    inline            = ["echo 'Reboot VM'", "sudo reboot"]
+#  }
 
   provisioner "shell" {
     execute_command     = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    pause_before        = "1m0s"
+#    pause_before        = "1m0s"
     scripts             = ["${path.root}/../scripts/build/cleanup.sh"]
-    start_retry_timeout = "10m"
+#    start_retry_timeout = "10m"
   }
 
-  provisioner "shell" {
-    environment_vars = ["IMAGE_VERSION=${var.image_version}", "INSTALLER_SCRIPT_FOLDER=${var.installer_script_folder}"]
-    inline           = ["pwsh -File ${var.image_folder}/SoftwareReport/Generate-SoftwareReport.ps1 -OutputDirectory ${var.image_folder}", "pwsh -File ${var.image_folder}/tests/RunAll-Tests.ps1 -OutputDirectory ${var.image_folder}"]
-  }
-
-  provisioner "file" {
-    destination = "${path.root}/../Ubuntu2404-Readme.md"
-    direction   = "download"
-    source      = "${var.image_folder}/software-report.md"
-  }
-
-  provisioner "file" {
-    destination = "${path.root}/../software-report.json"
-    direction   = "download"
-    source      = "${var.image_folder}/software-report.json"
-  }
-
-  provisioner "shell" {
-    environment_vars = ["HELPER_SCRIPT_FOLDER=${var.helper_script_folder}", "INSTALLER_SCRIPT_FOLDER=${var.installer_script_folder}", "IMAGE_FOLDER=${var.image_folder}"]
-    execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    scripts          = ["${path.root}/../scripts/build/configure-system.sh"]
-  }
-
-  provisioner "shell" {
-    execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    inline          = ["sleep 30", "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"]
-  }
+#  provisioner "shell" {
+#    environment_vars = ["IMAGE_VERSION=${var.image_version}", "INSTALLER_SCRIPT_FOLDER=${var.installer_script_folder}"]
+#    inline           = ["pwsh -File ${var.image_folder}/SoftwareReport/Generate-SoftwareReport.ps1 -OutputDirectory ${var.image_folder}", "pwsh -File ${var.image_folder}/tests/RunAll-Tests.ps1 -OutputDirectory ${var.image_folder}"]
+#  }
+#
+#  provisioner "file" {
+#    destination = "${path.root}/../Ubuntu2404-Readme.md"
+#    direction   = "download"
+#    source      = "${var.image_folder}/software-report.md"
+#  }
+#
+#  provisioner "file" {
+#    destination = "${path.root}/../software-report.json"
+#    direction   = "download"
+#    source      = "${var.image_folder}/software-report.json"
+#  }
+#
+#  provisioner "shell" {
+#    environment_vars = ["HELPER_SCRIPT_FOLDER=${var.helper_script_folder}", "INSTALLER_SCRIPT_FOLDER=${var.installer_script_folder}", "IMAGE_FOLDER=${var.image_folder}"]
+#    execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+#    scripts          = ["${path.root}/../scripts/build/configure-system.sh"]
+#  }
+#
+#  provisioner "shell" {
+#    execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
+#    inline          = ["sleep 30", "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"]
+#  }
 
 }
